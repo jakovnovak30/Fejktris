@@ -14,10 +14,17 @@ class Blok:
         for koordinate in koord:
             self.k.append((koordinate[0], koordinate[1]))
 
-    def spawn(self, okvir):
+    def spawn(self, okvir, blocks):
+        for b in blocks[:-1]:
+            for koord2 in b.k:
+                for koord in self.k:
+                    if koord[0] >= koord2[0]-30 and koord[0] <= koord2[0]+30 and koord[1] >= koord2[1]-30 and koord[1] <= koord2[1]+30:
+                        return False
         for koord in self.k:
             pygame.draw.rect(okvir, self.boja, [koord[0], koord[1], 30, 30])
         pygame.display.update()
+
+        return True
 
     def padni(self, okvir, blocks):
         novi = []
@@ -71,7 +78,7 @@ class Blok:
                         return
         self.k = novi
 
-    def rotiraj(self, okvir):
+    def rotiraj(self, okvir, blocks):
         novi = []
         prvi = self.k[0]
         novi.append(prvi)
@@ -85,4 +92,10 @@ class Blok:
             if x <= 0 or x >= 600 or y <= 0 or y >= 800:
                 return
             novi.append((x,y))
+
+        for b in blocks[:-1]:
+            for koord2 in b.k:
+                for koord in novi:
+                    if koord[0] >= koord2[0]-30 and koord[0] <= koord2[0]+30 and koord[1] >= koord2[1]-30 and koord[1] <= koord2[1]+30:
+                        return
         self.k = novi
