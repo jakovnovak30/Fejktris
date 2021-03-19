@@ -14,9 +14,18 @@ def izbrisi(red, blocks):
     for b in blocks:
         for koord in b.k:
             if koord[1] < red-30 or koord[1] > red+30:
-                novi.append(koord)
+                if koord[1] <= red:
+                    novi.append((koord[0], koord[1]+30))
+                    pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
+                    pygame.draw.rect(okvir, b.boja, [koord[0], koord[1]+30, 30, 30])
+                else:
+                    pygame.draw.rect(okvir, b.boja, [koord[0], koord[1], 30, 30])
+                    novi.append(koord)
+            else:
+                pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
         b.k = novi
-        b.padni(okvir,blocks)        
+        pygame.display.update()
+
 
 def provjeri(red):
     brojac = 0
@@ -102,7 +111,8 @@ def igra():
             i = 70
             while i < 800:
                 if provjeri(i):
-                    izbrisi(i, blocks)
+                    izbrisi(i, blocks[:-1])
+                    break
                 i += 30
             pada = True
 
