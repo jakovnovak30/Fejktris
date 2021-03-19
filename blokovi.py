@@ -82,7 +82,7 @@ class Blok:
             dy = koord[1] - prvi[1]
             x = math.cos(angle) * dx - math.sin(angle) * dy + prvi[0]
             y = math.sin(angle) * dx + math.cos(angle) * dy + prvi[1]
-            if koord[0] <= 30 or koord[0] >= 570 or koord[1] <= 30 or koord[1] >= 770:
+            if x <= 0 or x >= 600 or y <= 0 or y >= 800:
                 return
             novi.append((x,y))
         self.k = novi
