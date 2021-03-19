@@ -42,12 +42,12 @@ class Blok:
         novi = []
         brojac = 0
         for koord in self.k:
-            if koord[0]-30 > 0: brojac += 1
+            if koord[0] <= 0: brojac += 1
 
             novi.append((koord[0]-30,koord[1]))
             pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
 
-        if brojac <= 1: return
+        if brojac >= 1: return
 
         for b in blocks[:-1]:
             for koord1 in b.k:
