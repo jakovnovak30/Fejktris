@@ -1,9 +1,10 @@
 import pygame
 import random
+import math
 
 class Blok:
-    k = []
     def __init__(self, *koord):
+        self.k = []
         red = random.randrange(0, 255)
         green = random.randrange(0, 255)
         blue = random.randrange(0, 255)
@@ -15,11 +16,73 @@ class Blok:
 
     def spawn(self, okvir):
         for koord in self.k:
-            pygame.draw.rect(okvir, self.boja, [koord[0], koord[1], 10, 10])
+            pygame.draw.rect(okvir, self.boja, [koord[0], koord[1], 30, 30])
         pygame.display.update()
 
-    def padni(self):
+    def padni(self, okvir, blocks):
+        novi = []
         for koord in self.k:
-            self.k.append((koord[0]-10,koord[1]-10))
-            del self.k[0]
-            pygame.draw.rect(okvir, self.boja, [koord[0], koord[1], 10, 10])
+            novi.append((koord[0],koord[1]+1))
+
+            pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
+            pygame.draw.rect(okvir, self.boja, [koord[0], koord[1]+1, 30, 30])
+            pygame.display.update()
+
+            if koord[1] >= 770:
+                return False
+        self.k = novi
+        for b in blocks[:-1]:
+            for koord2 in b.k:
+                for koord in self.k:
+                    if koord2[0] == koord[0] and koord2[1] == koord[1]+30:
+                        return False
+        return True
+
+    def levo(self, okvir, blocks):
+        novi = []
+        brojac = 0
+        for koord in self.k:
+            if koord[0]-30 > 0: brojac += 1
+
+            novi.append((koord[0]-30,koord[1]))
+            pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
+
+        if brojac <= 1: return
+
+        for b in blocks[:-1]:
+            for koord1 in b.k:
+                for koord2 in novi:
+                    if koord1[0] == koord2[0] and koord2[1] >= koord1[1]-30 and koord2[1] <= koord1[1]+30:
+                        return
+        self.k = novi
+
+    def desno(self, okvir, blocks):
+        novi = []
+        for koord in self.k:
+            if koord[0]+30 >= 600: return
+            novi.append((koord[0]+30,koord[1]))
+            pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
+
+
+        for b in blocks[:-1]:
+            for koord1 in b.k:
+                for koord2 in novi:
+                    if koord1[0] == koord2[0] and koord2[1] >= koord1[1]-30 and koord2[1] <= koord1[1]+30:
+                        return
+        self.k = novi
+
+    def rotiraj(self, okvir):
+        novi = []
+        prvi = self.k[0]
+        novi.append(prvi)
+        for koord in self.k:
+            pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
+            angle = math.pi / 2
+            dx = koord[0] - prvi[0]
+            dy = koord[1] - prvi[1]
+            x = math.cos(angle) * dx - math.sin(angle) * dy + prvi[0]
+            y = math.sin(angle) * dx + math.cos(angle) * dy + prvi[1]
+            if koord[0] <= 30 or koord[0] >= 570 or koord[1] <= 30 or koord[1] >= 770:
+                return
+            novi.append((x,y))
+        self.k = novi
