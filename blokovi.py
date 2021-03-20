@@ -18,10 +18,10 @@ class Blok:
         for b in blocks[:-1]:
             for koord2 in b.k:
                 for koord in self.k:
-                    if koord[0] >= koord2[0]-30 and koord[0] <= koord2[0]+30 and koord[1] >= koord2[1]-30 and koord[1] <= koord2[1]+30:
+                    if koord[0] >= koord2[0]-20 and koord[0] <= koord2[0]+20 and koord[1] >= koord2[1]-20 and koord[1] <= koord2[1]+20:
                         return False
         for koord in self.k:
-            pygame.draw.rect(okvir, self.boja, [koord[0], koord[1], 30, 30])
+            pygame.draw.rect(okvir, self.boja, [koord[0], koord[1], 20, 20])
         pygame.display.update()
 
         return True
@@ -29,73 +29,75 @@ class Blok:
     def padni(self, okvir, blocks):
         novi = []
         for koord in self.k:
-            novi.append((koord[0],koord[1]+1))
-
-            pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
-            pygame.draw.rect(okvir, self.boja, [koord[0], koord[1]+1, 30, 30])
-            pygame.display.update()
-
-            if koord[1] >= 770:
+            novi.append((koord[0],koord[1]+5))
+            if koord[1] > 770:
                 return False
         self.k = novi
+        for koord in novi:
+            pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1]-5, 20, 20])
+            pygame.draw.rect(okvir, self.boja, [koord[0], koord[1], 20, 20])
+
         for b in blocks[:-1]:
             for koord2 in b.k:
                 for koord in self.k:
-                    if koord2[0] == koord[0] and koord2[1] == koord[1]+30:
+                    if koord2[0] == koord[0] and koord2[1] == koord[1]+20:
                         return False
+
+        pygame.display.update()
         return True
 
     def levo(self, okvir, blocks):
         novi = []
         brojac = 0
         for koord in self.k:
-            if koord[0] <= 0: brojac += 1
+            if koord[0] <= 20: brojac += 1
 
-            novi.append((koord[0]-30,koord[1]))
-            pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
+            novi.append((koord[0]-20,koord[1]))
+            pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 20, 20])
 
         if brojac >= 1: return
 
         for b in blocks[:-1]:
             for koord1 in b.k:
                 for koord2 in novi:
-                    if koord1[0] == koord2[0] and koord2[1] >= koord1[1]-30 and koord2[1] <= koord1[1]+30:
+                    if koord1[0] == koord2[0] and koord2[1] >= koord1[1]-20 and koord2[1] <= koord1[1]+20:
                         return
         self.k = novi
 
     def desno(self, okvir, blocks):
         novi = []
         for koord in self.k:
-            if koord[0]+30 >= 600: return
-            novi.append((koord[0]+30,koord[1]))
-            pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
+            if koord[0]+20 >= 400: return
+            novi.append((koord[0]+20,koord[1]))
+            pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 20, 20])
 
 
         for b in blocks[:-1]:
             for koord1 in b.k:
                 for koord2 in novi:
-                    if koord1[0] == koord2[0] and koord2[1] >= koord1[1]-30 and koord2[1] <= koord1[1]+30:
+                    if koord1[0] == koord2[0] and koord2[1] >= koord1[1]-20 and koord2[1] <= koord1[1]+20:
                         return
         self.k = novi
 
     def rotiraj(self, okvir, blocks):
         novi = []
         prvi = self.k[0]
-        novi.append(prvi)
+        novi.append((prvi[0], prvi[1]-5))
         for koord in self.k:
-            pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
+            pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 20, 20])
             angle = math.pi / 2
             dx = koord[0] - prvi[0]
             dy = koord[1] - prvi[1]
             x = math.cos(angle) * dx - math.sin(angle) * dy + prvi[0]
             y = math.sin(angle) * dx + math.cos(angle) * dy + prvi[1]
-            if x <= 0 or x >= 600 or y <= 0 or y >= 800:
+            if x <= 0 or x >= 380 or y <= 0 or y >= 780:
                 return
-            novi.append((x,y))
+            novi.append((x,y-5))
 
         for b in blocks[:-1]:
             for koord2 in b.k:
                 for koord in novi:
-                    if koord[0] >= koord2[0]-30 and koord[0] <= koord2[0]+30 and koord[1] >= koord2[1]-30 and koord[1] <= koord2[1]+30:
+                    if koord[0] >= koord2[0]-20 and koord[0] <= koord2[0]+20 and koord[1] >= koord2[1]-20 and koord[1] <= koord2[1]+20:
                         return
         self.k = novi
+        self.padni(okvir, blocks)

@@ -1,46 +1,46 @@
 import pygame
 import blokovi
 import random
-#import overlej
+import overlej
+import time
 
 pygame.init()
-okvir = pygame.display.set_mode((600,800))
+okvir = pygame.display.set_mode((700,800))
 pygame.display.set_caption("Fejktris TM")
 pygame.display.update()
 vura = pygame.time.Clock()
 blocks = []
-
 
 def izbrisi(red):
     global blocks
     for b in blocks[:-1]:
         novi = []
         for koord in b.k:
-            if koord[1] >= red-15 and koord[1] <= red+15:
-                pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
+            if koord[1] >= red-10 and koord[1] <= red+10:
+                pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 20, 20])
             else:
-                if koord[1] < red+15:
-                    novi.append((koord[0], koord[1]+30))
-                    pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
+                if koord[1] < red+10:
+                    novi.append((koord[0], koord[1]+20))
+                    pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 20, 20])
                 else:
-                    pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
+                    pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 20, 20])
                     novi.append(koord)
 
         b.k = novi
 
         for koord in b.k:
-            pygame.draw.rect(okvir, b.boja, [koord[0], koord[1], 30, 30])
+            pygame.draw.rect(okvir, b.boja, [koord[0], koord[1], 20, 20])
         pygame.display.update()
 
 
 def provjeri(red):
     brojac = 0
     pxarray = pygame.PixelArray(okvir)
-    for i in range(0, 600):
+    for i in range(20, 400):
         if pxarray[i][red] != okvir.map_rgb((0, 0, 0)):
             brojac += 1
 
-    if brojac == 600:
+    if brojac == 380:
         return True
 
     return False
@@ -50,6 +50,7 @@ def igra():
     pada = False
     brzina = 30
     pocetak = False
+    skor = 0
     global blocks
     blocks.clear()
 
@@ -67,65 +68,53 @@ def igra():
         vura.tick(25)
 
     okvir.fill((0,0,0))
+    rubovi = overlej.Overlej(okvir, skor)
     while traje:
-#        overlay = overlej.Overlej(okvir)
-
         if not pada:
             novi = random.randrange(0,6)
 
             if novi == 0:
-                prvi = blokovi.Blok((300,100), (270,100), (330,100), (300, 70))
+                prvi = blokovi.Blok((200,100), (180,100), (220,100), (200, 80))
                 traje = prvi.spawn(okvir, blocks)
                 blocks.append(prvi)
-
-                print("Tip: ", novi)
             elif novi == 1:
-                prvi = blokovi.Blok((240,100), (270,100), (300,100), (330, 100))
+                prvi = blokovi.Blok((140,100), (160,100), (180,100), (200, 100))
                 traje = prvi.spawn(okvir, blocks)
                 blocks.append(prvi)
-
-                print("Tip: ", novi)
             elif novi == 2:
-                prvi = blokovi.Blok((300,100), (300,70), (330,100), (360, 100))
+                prvi = blokovi.Blok((200,100), (200,80), (220,100), (240, 100))
                 traje = prvi.spawn(okvir, blocks)
                 blocks.append(prvi)
-
-                print("Tip: ", novi)
             elif novi == 3:
-                prvi = blokovi.Blok((300,100), (330,100), (360,100), (360, 70))
+                prvi = blokovi.Blok((200,100), (220,100), (240,100), (240, 80))
                 traje = prvi.spawn(okvir, blocks)
                 blocks.append(prvi)
-
-                print("Tip: ", novi)
             elif novi == 4:
-                prvi = blokovi.Blok((300,100), (300,70), (330,100), (330, 70))
+                prvi = blokovi.Blok((200,100), (200,80), (220,100), (220, 80))
                 traje = prvi.spawn(okvir, blocks)
                 blocks.append(prvi)
-
-                print("Tip: ", novi)
             elif novi == 5:
-                prvi = blokovi.Blok((270,100), (300,100), (300,70), (330, 70))
+                prvi = blokovi.Blok((180,100), (200,100), (200,80), (220, 80))
                 traje = prvi.spawn(okvir, blocks)
                 blocks.append(prvi)
-
-                print("Tip: ", novi)
             elif novi == 6:
-                prvi = blokovi.Blok((270,70), (300,70), (300,100), (330, 100))
+                prvi = blokovi.Blok((280,80), (300,80), (300,100), (320, 100))
                 traje = prvi.spawn(okvir, blocks)
                 blocks.append(prvi)
-
-                print("Tip: ", novi)
-            i = 85
+            i = 80
             while i < 800:
                 if provjeri(i):
+                    skor = skor + 100
+                    print('Trebal bi brisati red. Skor: ' + str(skor))
                     izbrisi(i)
-                i += 30
+                    rubovi = overlej.Overlej(okvir, skor)                    
+                i += 20
             pada = True
 
         trenutni = len(blocks)-1
         keys = pygame.key.get_pressed()
         if keys[pygame.K_DOWN]:
-            brzina = 200
+            brzina = 120
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -139,9 +128,8 @@ def igra():
                     blocks[trenutni].rotiraj(okvir, blocks)
 
         pada = blocks[trenutni].padni(okvir, blocks)
-
         vura.tick(brzina)
-        brzina = 30
+        brzina = 15
 
     while True:
         okvir.fill((0,0,0))
