@@ -8,22 +8,28 @@ okvir = pygame.display.set_mode((600,800))
 pygame.display.set_caption("Fejktris TM")
 pygame.display.update()
 vura = pygame.time.Clock()
+blocks = []
 
-def izbrisi(red, blocks):
-    novi = []
-    for b in blocks:
+
+def izbrisi(red):
+    global blocks
+    for b in blocks[:-1]:
+        novi = []
         for koord in b.k:
-            if koord[1] < red-30 or koord[1] > red+30:
-                if koord[1] <= red:
+            if koord[1] >= red-15 and koord[1] <= red+15:
+                pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
+            else:
+                if koord[1] < red+15:
                     novi.append((koord[0], koord[1]+30))
                     pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
-                    pygame.draw.rect(okvir, b.boja, [koord[0], koord[1]+30, 30, 30])
                 else:
-                    pygame.draw.rect(okvir, b.boja, [koord[0], koord[1], 30, 30])
+                    pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
                     novi.append(koord)
-            else:
-                pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 30, 30])
+
         b.k = novi
+
+        for koord in b.k:
+            pygame.draw.rect(okvir, b.boja, [koord[0], koord[1], 30, 30])
         pygame.display.update()
 
 
@@ -42,9 +48,10 @@ def provjeri(red):
 def igra():
     traje = True
     pada = False
-    blocks = []
     brzina = 30
     pocetak = False
+    global blocks
+    blocks.clear()
 
     okvir.fill((0,0,0))
     mesg = pygame.font.SysFont("timesnewroman", 20).render('Fejktris: press any key to start', True, (0,0,255))
@@ -108,11 +115,10 @@ def igra():
                 blocks.append(prvi)
 
                 print("Tip: ", novi)
-            i = 70
+            i = 85
             while i < 800:
                 if provjeri(i):
-                    izbrisi(i, blocks[:-1])
-                    break
+                    izbrisi(i)
                 i += 30
             pada = True
 
