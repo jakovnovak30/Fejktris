@@ -19,13 +19,12 @@ def izbrisi(red):
             if koord[1] >= red-10 and koord[1] <= red+10:
                 pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 20, 20])
             else:
-                if koord[1] <= red+10:
+                if koord[1] < red+10:
                     novi.append((koord[0], koord[1]+20))
                     pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 20, 20])
                 else:
                     pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 20, 20])
                     novi.append(koord)
-
         b.k = novi
 
     for b in blocks[:-1]:
@@ -138,7 +137,7 @@ def igra():
                 sledeci = blokovi.Blok(next_color, (580,380), (600,380), (600,400), (620, 400))
                 sledeci.spawn(okvir, blocks)
 
-            i = 80
+            i = 90
             while i < 800:
                 if provjeri(i):
                     skor = skor + 100
