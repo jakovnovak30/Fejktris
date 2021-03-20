@@ -162,7 +162,6 @@ def igra():
                     blocks[trenutni].levo(okvir, blocks)
                 if event.key == pygame.K_UP:
                     blocks[trenutni].rotiraj(okvir, blocks)
-                    vura.tick(20)
 
         pada = blocks[trenutni].padni(okvir, blocks)
         blocks[trenutni].nacrtaj(okvir)
