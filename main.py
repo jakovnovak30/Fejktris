@@ -44,6 +44,7 @@ def provjeri(red):
     return False
 
 def igra():
+    promjena_skora = False
     traje = True
     pada = False
     brzina = 30
@@ -53,7 +54,7 @@ def igra():
     blocks.clear()
 
     okvir.fill((0,0,0))
-    mesg = pygame.font.SysFont("timesnewroman", 20).render('Fejktris: press any key to start', True, (0,0,255))
+    mesg = pygame.font.SysFont("timesnewroman", 25).render('Fejktris: press any key to start', True, (255,255,255))
     okvir.blit(mesg, [200, 400])
     pygame.display.update()
     while not pocetak:
@@ -144,6 +145,15 @@ def igra():
                     print('Trebal bi brisati red. Skor: ' + str(skor))
                     izbrisi(i)
                     rubovi.update(okvir, skor)
+                    file = open("haj.txt", "r")
+                    high = file.read()
+                    file.close()
+                    if skor > int(high):
+                        high = str(skor)
+                        file = open("haj.txt", "w")
+                        file.write(high)
+                        file.close()
+                        promjena_skora = True
                 i += 20
             pada = True
 
@@ -172,8 +182,19 @@ def igra():
 
     while True:
         okvir.fill((0,0,0))
-        mesg = pygame.font.SysFont("timesnewroman", 20).render('Gejm over: press any r to restart or q to quit', True, (0,0,255))
+        mesg = pygame.font.SysFont("timesnewroman", 20).render('Gejm over: press any r to restart or q to quit', True, (255,255,255))
         okvir.blit(mesg, [130, 400])
+
+        if not promjena_skora:
+            file = open("haj.txt", "r")
+            mesg = pygame.font.SysFont("timesnewroman", 20).render('Haj skor: ' + file.read(), True, (255,255,255))
+            file.close()
+        else:
+            file = open("haj.txt", "r")
+            mesg = pygame.font.SysFont("timesnewroman", 20).render('Novi haj skor: ' + file.read(), True, (255,255,255))
+            file.close()
+
+        okvir.blit(mesg, [130, 500])
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
