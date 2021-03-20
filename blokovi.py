@@ -19,7 +19,6 @@ class Blok:
                         return False
         for koord in self.k:
             pygame.draw.rect(okvir, self.boja, [koord[0], koord[1], 20, 20])
-        pygame.display.update()
 
         return True
 
@@ -32,7 +31,6 @@ class Blok:
         self.k = novi
         for koord in novi:
             pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1]-5, 20, 20])
-            pygame.draw.rect(okvir, self.boja, [koord[0], koord[1], 20, 20])
 
         for b in blocks[:-1]:
             for koord2 in b.k:
@@ -40,8 +38,11 @@ class Blok:
                     if koord2[0] == koord[0] and koord2[1] == koord[1]+20:
                         return False
 
-        pygame.display.update()
         return True
+
+    def nacrtaj(self, okvir):
+        for koord in self.k:
+            pygame.draw.rect(okvir, self.boja, [koord[0], koord[1], 20, 20])
 
     def levo(self, okvir, blocks):
         novi = []

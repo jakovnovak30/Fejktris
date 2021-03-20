@@ -115,7 +115,7 @@ def igra():
                 traje = prvi.spawn(okvir, blocks)
                 blocks.append(prvi)
 
-            pygame.draw.rect(okvir, (0,0,0), [450, 350, 200, 150])
+            pygame.draw.rect(okvir, (0,0,0), [420, 350, 200, 150])
             #preview sledeceg
             if next == 0:
                 sledeci = blokovi.Blok(next_color, (500,400), (480,400), (520,400), (500,380))
@@ -167,6 +167,9 @@ def igra():
                     vura.tick(20)
 
         pada = blocks[trenutni].padni(okvir, blocks)
+        blocks[trenutni].nacrtaj(okvir)
+
+        pygame.display.update()        
         vura.tick(brzina)
         brzina = 15
 
