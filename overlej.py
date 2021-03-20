@@ -2,9 +2,6 @@ import pygame
 
 class Overlej:
     def __init__(self, okvir, skor):
-        pygame.draw.rect(okvir,(0,0,0),[500, 30, 150, 80])
-        pygame.display.update()
-
         pygame.draw.line(okvir, (255,255,255), (15,50), (15,800), 10) #levo
         pygame.draw.line(okvir, (255,255,255), (15,50), (405, 50), 10) #gore
         pygame.draw.line(okvir, (255,255,255), (405,50), (405,800), 10) #desno
@@ -27,4 +24,12 @@ class Overlej:
         mesg = pygame.font.SysFont("arial", 25).render('RIGHT - go right', True, (0,255,0))
         okvir.blit(mesg, [420,200])
 
+        mesg = pygame.font.SysFont("comicsansms", 30).render('NEXT SHAPE:', True, (255, 0, 0))
+        okvir.blit(mesg, [420, 250])
         pygame.display.update()
+
+    def update(self, okvir, skor):
+        pygame.draw.rect(okvir,(0,0,0),[500, 30, 150, 80])
+        pygame.display.update()
+        mesg = pygame.font.SysFont("comicsansms", 30).render('Skor: ' + str(skor), True, (0,0,255))
+        okvir.blit(mesg, [420, 40])

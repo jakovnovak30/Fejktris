@@ -3,13 +3,10 @@ import random
 import math
 
 class Blok:
-    def __init__(self, *koord):
+    def __init__(self, color, *koord):
         self.k = []
-        red = random.randrange(0, 255)
-        green = random.randrange(0, 255)
-        blue = random.randrange(0, 255)
 
-        self.boja = (red, green, blue)
+        self.boja = color
 
         for koordinate in koord:
             self.k.append((koordinate[0], koordinate[1]))
