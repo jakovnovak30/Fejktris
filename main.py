@@ -28,9 +28,8 @@ def izbrisi(red):
 
         b.k = novi
 
-        for koord in b.k:
-            pygame.draw.rect(okvir, b.boja, [koord[0], koord[1], 20, 20])
-        pygame.display.update()
+    for b in blocks[:-1]:
+        b.nacrtaj(okvir)
 
 
 def provjeri(red):
@@ -169,7 +168,7 @@ def igra():
         pada = blocks[trenutni].padni(okvir, blocks)
         blocks[trenutni].nacrtaj(okvir)
 
-        pygame.display.update()        
+        pygame.display.update()
         vura.tick(brzina)
         brzina = 15
 
