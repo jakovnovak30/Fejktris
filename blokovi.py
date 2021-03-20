@@ -30,7 +30,7 @@ class Blok:
         novi = []
         for koord in self.k:
             novi.append((koord[0],koord[1]+5))
-            if koord[1] > 770:
+            if koord[1] >= 770:
                 return False
         self.k = novi
         for koord in novi:
@@ -82,7 +82,7 @@ class Blok:
     def rotiraj(self, okvir, blocks):
         novi = []
         prvi = self.k[0]
-        novi.append((prvi[0], prvi[1]-5))
+        novi.append(prvi)
         for koord in self.k:
             pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 20, 20])
             angle = math.pi / 2
@@ -92,7 +92,7 @@ class Blok:
             y = math.sin(angle) * dx + math.cos(angle) * dy + prvi[1]
             if x <= 0 or x >= 380 or y <= 0 or y >= 780:
                 return
-            novi.append((x,y-5))
+            novi.append((x,y))
 
         for b in blocks[:-1]:
             for koord2 in b.k:
