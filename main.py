@@ -26,6 +26,8 @@ def izbrisi(red):
                     pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 20, 20])
                     novi.append(koord)
         b.k = novi
+        if len(novi) == 0:
+            del b
 
     for b in blocks[:-1]:
         b.nacrtaj(okvir)
@@ -160,7 +162,7 @@ def igra():
         trenutni = len(blocks)-1
         keys = pygame.key.get_pressed()
         if keys[pygame.K_DOWN]:
-            brzina = 120
+            brzina = 60
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -178,11 +180,11 @@ def igra():
 
         pygame.display.update()
         vura.tick(brzina)
-        brzina = 15
+        brzina = 8
 
     while True:
         okvir.fill((0,0,0))
-        mesg = pygame.font.SysFont("timesnewroman", 20).render('Gejm over: press any r to restart or q to quit', True, (255,255,255))
+        mesg = pygame.font.SysFont("timesnewroman", 20).render('Gejm over: press r to restart or q to quit', True, (255,255,255))
         okvir.blit(mesg, [130, 400])
 
         if not promjena_skora:

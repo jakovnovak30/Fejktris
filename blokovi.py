@@ -25,12 +25,12 @@ class Blok:
     def padni(self, okvir, blocks):
         novi = []
         for koord in self.k:
-            novi.append((koord[0],koord[1]+5))
+            novi.append((koord[0],koord[1]+10))
             if koord[1] >= 770:
                 return False
         self.k = novi
         for koord in novi:
-            pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1]-5, 20, 20])
+            pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1]-10, 20, 20])
 
         for b in blocks[:-1]:
             for koord2 in b.k:
@@ -80,7 +80,6 @@ class Blok:
     def rotiraj(self, okvir, blocks):
         novi = []
         prvi = self.k[0]
-        novi.append(prvi)
         for koord in self.k:
             pygame.draw.rect(okvir, (0,0,0), [koord[0], koord[1], 20, 20])
             angle = math.pi / 2
